@@ -28,6 +28,7 @@ public class ShowActivity extends AppCompatActivity {
 
     private TextView tvList;
     private RecyclerView rvEmployeeList;
+    private List<Employee> employeeList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +37,9 @@ public class ShowActivity extends AppCompatActivity {
 
         rvEmployeeList = findViewById(R.id.rvEmployeeList);
         rvEmployeeList.setLayoutManager(new LinearLayoutManager(this));
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        rvEmployeeList.setLayoutManager(linearLayoutManager);
 
 
         Retrofit retrofit = new Retrofit.Builder().baseUrl(URL.base_url).addConverterFactory(GsonConverterFactory.create()).build();
@@ -51,28 +55,12 @@ public class ShowActivity extends AppCompatActivity {
                     Toast.makeText(ShowActivity.this, "Error code"+response.code(), Toast.LENGTH_SHORT).show();
                     return;
                 } else {
+
                     List<Employee> employeeList = response.body();
 
-//                    Log.d("TAG","Response = "+employeeList);
-//
-//                    EmployeeAdapter employeeAdapter = new EmployeeAdapter(this, employeeList);
-//                    rvEmployeeList.setAdapter(employeeAdapter);
-
-
-                    for(Employee emp : employeeList) {
-
-
-//                        String data = "";
-//                        data += "Name is :" + emp.getEmployee_name() + "\n";
-//                        data += "Salary is :" + emp.getEmployee_salary() + "\n";
-//                        data += "Age is :" + emp.getEmployee_age() + "\n";
-//                        data += "-----------------------------" + "\n";
-
-//                        tvList.append(data);
-
-
-//                        rvEmployeeList.setAdapter(new EmployeeAdapter(this, emp));
-                    }
+                    EmployeeAdapter employeeAdapter = new EmployeeAdapter(ShowActivity.this, employeeList);
+                    rvEmployeeList.setAdapter(employeeAdapter);
+                    rvEmployeeList.setLayoutManager(new LinearLayoutManager(ShowActivity.this));
 
                 }
 
